@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+
+</style>
+</head>
+<script src="vue2.js"></script><!-- 新版本 选择器不可以选择html body元素 -->
+<script src="vue-resource.js"></script><!-- get JSONP用新版本会出错,post用新版本不会错。 why 老版本是0.7的版本 均不会错 -->
+<script>
+window.onload=function(){
+	new Vue({
+		el:"input",//vue2.0版本不可以挂载html 和body
+		methods:{
+			get:function(){
+				this.$http.get("get.php",{
+					a:4,
+					b:3
+				}).then(function(res){
+					alert(res.data);
+				},function(res){
+					alert(res.data);
+				});
+			},
+			//Post
+			post:function(){
+				this.$http.post("post.php",{
+					a:4,
+					b:3
+				},{
+					emulateJSON:true
+				}).then(function(res){
+					alert(res.data);
+				},function(res){
+					alert(res.data);
+				});
+			},
+			//post结束
+
+			//jsonp baidu
+			jsonpBaidu:function(){
+				this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",{//参数
+					wd:"汉字"//JSON对象标点符号坑 还有个坑是汉字输入360无内容baidu正常
+				},{
+					jsonp:"cb"//接口名字默认是callback
+				}).then(function(res){
+					alert(res.data.s);
+				},function(res){
+					alert(res.status);
+				});
+			},
+			//jsonp baidu结束
+
+			//jsonp 360
+			jsonp360:function(){
+				this.$http.jsonp("https://sug.so.360.cn/suggest",{//参数
+					word:"aa"//JSON对象标点符号坑 还有个坑是汉字360输入无内容
+				},{
+					jsonp:"callback"//接口名字默认是callback
+				}).then(function(res){
+					alert(res.data.s);
+				},function(res){
+					alert(res.data);
+				});
+			}
+			//jsonp baidu结束
+		}
+	});
+};
+</script>
+<body>
+	<input  id="good" type="button" value="按钮" @click="jsonp360()">
+</body>
+</html>

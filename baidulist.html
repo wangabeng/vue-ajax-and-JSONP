@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+	#q {
+		width: 300px; 
+		height: 30px; 
+		padding: 5px; 
+		border:1px solid #999900; 
+		font-size: 16px;
+	}
+	#ul1 {
+		border:1px solid #999900; 
+		width: 310px; 
+		margin: 0;
+		padding: 0; 
+		-display: none;
+	}
+	li a { 
+		line-height: 30px; 
+		padding: 5px; 
+		text-decoration: none; 
+		color: black; 
+		display: block;
+	}
+	li a:hover,li a.active{ /*注意.active的优先级 低于li a的优先级 所以给li的a添加.active后无效 需要在CSS里为.active前加li a提升class的优先级*/
+		background: #f90; 
+		color: white; 
+	}
+</style>
+</head>
+<script src="vue1.js"></script>
+<script src="vue-resource.js"></script>
+<script>
+window.onload=function(){
+	new Vue({
+		el:"#box",
+		data:{
+			//myData:["a","b","c"],
+			myData:[],
+			t1:"",
+			nowIndex:-1
+		},
+		methods:{
+			//逻辑 获取数据 添加到myData数组里
+			get:function(ev){
+				//如果keycode等于上或下 就不发请求	
+				if (ev.keyCode==38||ev.keyCode==40)//keyCode注意写法 这是一个小坑
+				{
+					return;
+				}
+
+				//如果按下回车键 就打开搜索窗口
+				if (ev.keyCode==13)
+				{
+					window.open("https://www.baidu.com/s?wd="+this.t1);
+					this.t1="";
+				}
+
+				//alert(1);
+				this.$http.jsonp("https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",{
+					wd:this.t1
+				},{
+					jsonp:"cb"//接口名字默认是callback
+				}).then(function(res){
+					//alert(res.data.s);
+					this.myData=res.data.s;
+				},function(res){
+					alert(res.status);//失败了 dosomething
+				});
+			},
+			//按下键盘下键的时候 当前激活状态的li添加class .active nowIndex加1。必须在输入框上添加事件
+			movedown:function(){
+				this.nowIndex++;
+				//console.log(this.nowIndex);
+				if (this.nowIndex==this.myData.length)
+				{
+					this.nowIndex=-1;
+				}
+				this.t1=this.myData[this.nowIndex];
+			},
+			//添加键盘按下上移的时候 this.nowIndex--
+			moveup:function(){
+				this.nowIndex--;
+				//console.log(this.nowIndex);
+				if (this.nowIndex==-1)
+				{
+					this.nowIndex=this.myData.length;
+				}
+				this.t1=this.myData[this.nowIndex];
+			},
+
+		}
+	});
+};
+</script>
+<body>
+	<div id="box">
+		<input type="text" id="q" v-model="t1" @keyup="get($event)" @keydown.down.prevent="movedown()" @keydown.up.prevent="moveup()">
+		<ul id="ul1" v-show="myData.length!=0">
+			<li ><a href="#" v-for="value in myData" :class="{active:$index==nowIndex}">{{value}}</a></li>
+			
+			<!--<li><a href="#">b</a></li>
+			<li><a href="#">b</a></li>  -->
+		</ul>
+		<p v-show="myData.length==0">暂无数据----</p>
+	</div>
+	
+</body>
+</html>

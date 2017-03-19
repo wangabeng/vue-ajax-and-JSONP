@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+
+</style>
+</head>
+<script src="vue2.js"></script><!-- 新版本 选择器不可以选择html body元素 -->
+<script src="vue-resource1.2.1.js"></script><!-- 用新版本会出错 why 此版本是0.7的版本 -->
+<script>
+window.onload=function(){
+	new Vue({
+		el:"input",//vue2.0版本不可以挂载html 和body
+		methods:{
+			get:function(){
+				this.$http.get("get.php",{
+					a:4,
+					b:3
+				}).then(function(res){
+					alert(res.data);
+				},function(res){
+					alert(res.data);
+				});
+			},
+			//Post
+			post:function(){
+				this.$http.post("post.php",{
+					a:4,
+					b:3
+				},{
+					emulateJSON:true
+				}).then(function(res){
+					alert(res.data);
+				},function(res){
+					alert(res.data);
+				});
+			}
+			//post结束
+		}
+	});
+};
+</script>
+<body>
+	<input  id="good" type="button" value="按钮" @click="post()">
+</body>
+</html>

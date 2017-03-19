@@ -1,0 +1,4 @@
+1 get的时候 vue-resource.js用新版本1.2.1会出错 why ；用0.7的版本就没问题 why.Post用新的版本1.2.1没有问题。
+2 vue2.0.js 2.0版本选择器不可以直接挂载body和html元素
+
+3JSONP的坑： 汉字无法输入内容；需要使用旧版本vue-resource.js

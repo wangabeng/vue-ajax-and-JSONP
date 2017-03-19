@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+
+</style>
+</head>
+<script src="vue2.js"></script>
+<script src="vue-resource1.2.1.js"></script>
+<script>
+window.onload=function(){
+	new Vue({
+		el:"input",
+		methods:{
+			get:function(){
+				this.$http.get("a.txt").then(function(res){
+					alert(res.data);
+				},function(res){
+					alert(res.data);
+				});
+			}
+		}
+	});
+};
+</script>
+<body>
+	<input type="button" value="按钮" @click="get()">
+</body>
+</html>
