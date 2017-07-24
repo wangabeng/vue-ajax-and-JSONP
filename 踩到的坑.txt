@@ -1,4 +1,8 @@
-1 get��ʱ�� vue-resource.js���°汾1.2.1����� why ����0.7�İ汾��û���� why.Post���µİ汾1.2.1û�����⡣
-2 vue2.0.js 2.0�汾ѡ����������ֱ�ӹ���body��htmlԪ��
+1 get的时候 vue-resource.js用新版本1.2.1会出错 why ；用0.7的版本就没问题 why.Post用新的版本1.2.1没有问题。
+2 vue2.0.js 2.0版本选择器不可以直接挂载body和html元素
 
-3JSONP�Ŀӣ� �����޷��������ݣ���Ҫʹ�þɰ汾vue-resource.js
+3JSONP的坑： 汉字无法输入内容；需要使用旧版本vue-resource.js
+
+-----------------------------
+2017年7月24日 
+以后处理ajax请求不再用vue-resource，vue-resource已经不再更新了，改用axios。
