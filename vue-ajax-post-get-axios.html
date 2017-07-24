@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+
+</style>
+</head>
+<script src="vue2.js"></script><!-- 新版本 选择器不可以选择html body元素 -->
+
+<!-- <script src="vue2.js"></script> -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+<script>
+window.onload=function(){
+	Vue.prototype.$http = axios;
+	//Vue.prototype.$ajax = axios;
+	new Vue({
+		el:"#good",//vue2.0版本不可以挂载html 和body
+		methods:{
+			//get的几种方式
+			/*get:function(){
+				this.$http.get("get.php",{
+					'a':4,
+					'b':5
+				}).then(function(res){
+					alert(res.data);
+				}).catch(function(error){
+					alert(error);
+				});
+			},*/
+			/* get:function(){
+				this.$http({
+				  method: 'get',
+				  url: 'get.php',
+				  data: {
+					'a': 4,
+					'b': 5
+				  }
+				});
+			}, */
+			get:function(){
+				this.$http.get("get.php",{
+					params:{
+						a:4,
+						b:7
+					}
+				}).then(function(res){
+					alert(res.data);
+				}).catch(function(error){
+					alert(error);
+				});
+			},			
+			//Post 按官方api 不成功
+			post:function(){
+				this.$http.post("post.php",{
+						a:4,
+						b:7
+				}).then(function(res){
+					alert(res.data);
+				}).catch(function(error){
+					alert(error);
+				});
+			},
+
+			//post的成功写法 
+			PPP:function(){
+				var params = new URLSearchParams();//见https://segmentfault.com/q/1010000009057655
+				params.append('a', 2);
+				params.append('b', 3);
+
+				this.$http.post('./post.php',params)
+				.then(function(response){
+					alert(response.data);
+				})
+				.catch(function(error){
+					console.log(error);
+				});
+			}
+			/*
+			axios.post('/user',{
+				firstName:'friend',
+				lastName:'Flintstone'
+			})
+			.then(function(response){
+				console.log(response);
+			})
+			.catch(function(error){
+				console.log(error);
+			});
+			*/
+		}
+	});
+};
+</script>
+<body>
+	<div id='good'>
+		<input  type="button" value="按钮GET" @click="get()">
+		<input  type="button" value="按钮POST" @click="post()">
+		<input  type="button" value="PPP" @click="PPP()">
+	</div>
+</body>
+</html>
